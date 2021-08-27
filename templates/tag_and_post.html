@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+
+{% block content%}
+
+
+<div class="container">
+    <h2>#{{tag.name}} </h2>
+    <div>
+        {% for post in tag.post_table %}
+        <h2>{{ post.title}}</h2>
+        <P>{{post.content}} </P>
+        <small>created at {{post.created_at}} <i>by</i> {{post.user.first_name}} </small>
+        <button><a href="/{{post.user.id}}">BACK TO {{post.user.first_name}}'s PAGE</a></button>
+        {% endfor %}
+        
+        
+    </div>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#edit_tag_form" aria-expanded="false" aria-controls="collapseExample">
+        EDIT TAG
+    </button>
+</div>
+<div class="collapse" id="edit_tag_form">
+    <div class="card card-body">
+        <form action="/edit/{{tag.id}}", method="POST">
+            <div class="form-group row">
+                <div class="col-sm-10">
+                  <input type="text"
+                         class="form-control"
+                         name="edit_tag_form"
+                         value="{{tag.name}}">
+              </div>
+              <div class="form-group row">
+                  <div class="ml-auto mr-3">
+                    <button class="btn btn-sm btn-primary" href="">CANCEL</button>
+                    <button type="submit" class="btn btn-success">SAVE</button>
+                  </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}
+
+   

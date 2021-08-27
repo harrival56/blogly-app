@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %} {{post.user.first_name}} {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-10 col-12">
+        
+        <h2>{{ post.title}}</h2>
+        <P>{{post.content}} </P>
+        <small>created at {{post.created_at}} <i>by</i> {{post.user.first_name}} </small>
+        {% if post.hashtag %}
+        <p>
+          <b>Tags:</b>
+          {% for tag in post.hashtag %}
+          <!-- <a href=""><i class="badge bg-primary">{{ tag.name }}</i></a> -->
+          <a href="/tag/{{tag.id}}"><i class="badge bg-info">#{{tag.name}}</i></a>
+          {% endfor %}
+        </p>
+        {% endif %}
+            
+    </div>
+    <!-- EDIT AND DELETE BOTTON -->
+    <form>
+        <a class="btn btn-sm btn-secondary" href="/{{post.user.id}}">Back</a>
+        <button class="btn btn-primary btn-sm"
+                type="button"
+                data-bs-toggle="collapse" 
+                data-bs-target="#collapseExample" 
+                aria-expanded="false" aria-controls="collapseExample"
+                formaction="/{{post.user.id}}/edit/{{post.id}}"
+                formmethod="GET">EDIT
+        </button>
+        <button class="btn btn-danger btn-sm"
+                formaction="/{{post.user.id}}/delete/{{post.id}}"
+                formmethod="POST">DELETE
+        </button>
+      </form>
+</div>
+
+
+  <!-- EDIT FORM -->
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        <form action="/{{post.user.id}}/{{post.id}}", method="POST">
+            <div class="form-group row">
+                <label for="title" class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10">
+                  <input type="text"
+                         class="form-control"
+                         id="title"
+                         name="title"
+                         value="{{post.title}}">
+              </div>
+          
+              <div class="form-group row">
+                <label for="content" class="col-sm-2 col-form-label">Content</label>
+                <div class="col-sm-10">
+                  <input type="text"
+                         class="form-control"
+                         id="ocontent"
+                         name="content"
+                         value="{{post.content}}">
+                </div>
+              </div>
+              </div>
+              <div class="form-group row">
+                <div class="ml-auto mr-3">
+                  <button href="/{{user}}/{{post.id}}" class="btn btn-outline-info">
+                    CANCEL
+                  </button>
+                  <button type="submit" class="btn btn-success">
+                    SAVE
+                  </button>
+                </div>
+              </div>
+        </form>
+    </div>
+  </div>
+  </div>
+
+  
+  </div>
+ 
+{% endblock %}

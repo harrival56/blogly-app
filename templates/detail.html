@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %} {{user.first_name}} {% endblock %}
+
+{% block content %}
+    <!-- HEADING -->
+<h1>{{user.first_name}}'s detail</h1>
+<!-- GREET MESSAGE -->
+<div>
+    <blockquote> {{user.greet()}}</blockquote>
+</div>
+<!-- SHOW IMAGE -->
+<div class="row">
+
+  {% if user.image_url %}
+  <div class="col-sm-2 col-6">
+    <img src="{{ user.image_url }}"
+         alt="{{ user.first_name }}"
+         class="img-fluid">
+    <a class="btn btn-sm btn-secondary" href="/">Back</a>
+  
+      {% endif %}
+      <!-- SHOW LIST OF TAGE -->
+      <h3>TAGS:</h3>
+      
+      {% for tag in tags %}
+        <a href="/tag/{{tag.id}}"><span class="badge bg-info">#{{tag.name}}</span></a>
+      {% endfor %}
+        <div>
+          <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#tag_form" aria-expanded="false" aria-controls="collapseExample">
+            ADD TAG
+          </button>
+        </div>
+            <div class="collapse" id="tag_form">
+              <div class="card card-body">
+                  <form action="/{{user.id}}/add_tag", method="POST">
+                      <div class="form-group row">
+                          <div class="col-sm-10">
+                            <input type="text"
+                                   class="form-control"
+                                   name="create_tag"
+                                   placeholder="Enter a tag name">
+                        </div>
+                        <div class="form-group row">
+                            <div class="ml-auto mr-3">
+                              <button class="btn btn-sm btn-primary" href="">CANCEL</button>
+                              <button type="submit" class="btn btn-success">ADD</button>
+                            </div>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+            </div>
+       
+  </div>
+  
+
+  
+<!-- SHOW DESCRIPTION -->
+  <div class="col-sm-8 col-12">
+    <h5>First name: {{ user.first_name }}</h5>
+    <h5>Last name: {{ user.last_name }}</h5>
+    <h5>position: {{ user.position }}</h5>
+    <h5>country of origin: {{ user.c_of_origin }}</h5>
+    <!-- EDIT AND DELETE USER BOTTON -->
+    <form>
+      <button class="btn btn-primary btn-sm"
+              formaction="/edit/{{user.id}}"
+              formmethod="GET">EDIT
+      </button>
+      <button class="btn btn-danger btn-sm"
+              formaction="/delete/{{user.id}}"
+              formmethod="POST">DELETE
+      </button>
+    </form>
+    <!-- LIST POSTS -->
+    <h2 class="mt-4">Posts</h2>
+
+    <ul>
+      {% for post in user.post %}
+      <li>
+        
+        <a href="/{{user.id}}/{{ post.id}}">{{ post.title }}</a>
+          
+      </li>
+      {% endfor %}
+    </ul>
+    <!-- ADD POST BOTTON AND FORM -->
+    <p>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#add_post_form" aria-expanded="false" aria-controls="collapseExample">
+          ADD POST
+        </button>
+      </p>
+      <div class="collapse" id="add_post_form">
+        <form action="/{{user.id}}/post", method="POST">
+            <div class="form-group row">
+                <label for="title" class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-10">
+                  <input type="text"
+                         class="form-control"
+                         id="title"
+                         name="title"
+                         placeholder="Title">
+              </div>
+          
+              <div class="form-group row">
+                <label for="content" class="col-sm-2 col-form-label">Content</label>
+                <div class="col-sm-10">
+                  <input type="text"
+                         class="form-control"
+                         id="ocontent"
+                         name="content"
+                         placeholder="Your content">
+                </div>
+              </div>
+              <div class="form-check">
+                {% for tag in tags %}
+                <div>
+                  <input class="form-check-input"
+                         type="checkbox"
+                         value="{{ tag.id }}"
+                         id="tag_{{ tag.id }}"
+                         name="tags">
+                  <label class="form-check-label" for="tag_{{ tag.id }}">
+                    {{ tag.name }}
+                  </label>
+                </div>
+                {% endfor %}
+              </div>
+              <div class="form-group row">
+                  <div class="ml-auto mr-3">
+                    <button class="btn btn-sm btn-primary" href="/{{user.id}}">CANCEL</button>
+                    <button type="submit" class="btn btn-success">SAVE</button>
+                  </div>
+                </div>
+        </form>
+      </div>
+
+  </div>
+</div>
+
+
+{% endblock %}
